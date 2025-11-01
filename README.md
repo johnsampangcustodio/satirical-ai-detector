@@ -15,3 +15,5 @@ No build step or server is required.
 
 1.  Clone this repository.
 2.  Open the `index.html` file directly in your web browser.
+
+also on github pages :p
