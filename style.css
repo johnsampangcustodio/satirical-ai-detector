@@ -1,0 +1,378 @@
+/*
+ * =========================================
+ * "LENS" DESIGN SYSTEM - TOKEN SYSTEM
+ * =========================================
+ */
+:root {
+    /* Color Palette */
+    --color-base: #0a0a0a;
+    --color-surface: #222222;
+    --color-text: #eaeaea;
+    --color-text-muted: #888888;
+    --color-accent-blue: #00b8ff;
+    --color-accent-hot: #ff003d;
+    --color-border: #333333;
+
+    /* Typography */
+    --font-ui:
+        "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-data: "JetBrains Mono", monospace;
+
+    /* Spacing (4pt Grid) */
+    --spacing-1: 4px;
+    --spacing-2: 8px;
+    --spacing-3: 12px;
+    --spacing-4: 16px;
+    --spacing-5: 20px;
+    --spacing-6: 24px;
+}
+
+/*
+ * =========================================
+ * GLOBAL STYLES & RESET
+ * =========================================
+ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--color-base);
+    color: var(--color-text);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#workbench {
+    width: 100vw;
+    height: 100vh;
+}
+
+/*
+ * =========================================
+ * CORE PAGE-SWITCHING LOGIC
+ * =========================================
+ */
+.page {
+    display: none;
+    width: 100%;
+    height: 100%;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#upload-page.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+#scanning-page.active,
+#results-page.active {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+/*
+ * =========================================
+ * TYPOGRAPHY
+ * =========================================
+ */
+h3 {
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text);
+    padding-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-4);
+}
+
+/*
+ * =========================================
+ * STEP 1: UPLOAD PAGE (MODAL)
+ * =========================================
+ */
+#upload-box {
+    width: 600px;
+    max-width: 90%;
+    background: var(--color-surface);
+    border-radius: var(--spacing-2);
+    border: 1px dashed var(--color-border);
+    transition: all 0.1s ease-in;
+
+    /* UPDATED: Added padding and text-align */
+    padding: var(--spacing-4);
+    text-align: center;
+}
+
+/* NEW: Style for the "LENS" title */
+.lens-title {
+    font-family: var(--font-data);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--color-accent-blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-4);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-3);
+}
+
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* UPDATED: Adjusted padding */
+    padding: var(--spacing-4) 0 var(--spacing-2);
+    cursor: pointer;
+}
+
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--color-accent-blue);
+    margin-bottom: var(--spacing-4);
+}
+
+.upload-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--color-accent-blue);
+}
+
+#upload-box:hover,
+#upload-box:focus-within {
+    border-color: var(--color-accent-blue);
+    box-shadow: 0 0 15px rgba(0, 184, 255, 0.2);
+}
+
+#upload-box h3 {
+    font-size: 18px;
+    text-transform: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 var(--spacing-2);
+}
+
+#upload-box p {
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+
+/*
+ * =========================================
+ * STEP 2: "SCANNING" PAGE
+ * =========================================
+ */
+.panel-viewer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+}
+
+#scanning-image,
+#results-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* UPDATED: Converted to flex-column to manage log height */
+.panel-log,
+.panel-report {
+    background: var(--color-surface);
+    padding: var(--spacing-4);
+    border-left: 1px solid var(--color-border);
+
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ensures panel fills height */
+}
+
+/* The Scan Line */
+#scan-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-accent-blue);
+    box-shadow:
+        0 0 10px 2px var(--color-accent-blue),
+        0 0 20px 5px rgba(0, 184, 255, 0.5);
+    animation: scan 0.5s linear infinite alternate;
+}
+
+@keyframes scan {
+    from {
+        top: 0%;
+    }
+    to {
+        top: 100%;
+    }
+}
+
+/* UPDATED: Log data now fills available space and scrolls */
+.log-data {
+    font-family: var(--font-data);
+    font-size: 12px;
+    color: var(--color-text-muted);
+    white-space: pre-wrap;
+    flex-grow: 1; /* Allows it to fill remaining space */
+    overflow-y: auto; /* Adds scrollbar if content overflows */
+}
+
+/*
+ * =========================================
+ * STEP 3: RESULTS PAGE
+ * =========================================
+ */
+
+#heatmap-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(255, 0, 61, 0.4) 0%,
+            transparent 20%
+        ),
+        radial-gradient(
+            circle at 75% 60%,
+            rgba(255, 0, 61, 0.5) 0%,
+            transparent 25%
+        );
+    mix-blend-mode: screen;
+    animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.7;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.report-block {
+    margin-bottom: var(--spacing-4);
+}
+
+.report-label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    display: block;
+    margin-bottom: var(--spacing-1);
+}
+
+.data-hot,
+.data-blue,
+.data-list {
+    font-family: var(--font-data);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.data-hot {
+    color: var(--color-accent-hot);
+}
+
+.data-blue {
+    color: var(--color-accent-blue);
+}
+
+.data-list {
+    list-style: none;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: var(--spacing-2);
+}
+
+.data-list li {
+    position: relative;
+    margin-bottom: var(--spacing-2);
+}
+
+.data-list li::before {
+    content: ">";
+    position: absolute;
+    left: -16px;
+    top: 0;
+    color: var(--color-accent-blue);
+    font-weight: 500;
+}
+
+.recommendation p {
+    color: var(--color-accent-hot);
+    font-weight: 500;
+}
+
+/*
+ * =========================================
+ * COMPONENTS (BUTTON)
+ * =========================================
+ */
+#reset-button {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--color-accent-blue);
+    color: #000;
+    border: none;
+    border-radius: var(--spacing-1);
+    padding: var(--spacing-3) var(--spacing-4);
+    margin-top: var(--spacing-4);
+    width: 100%;
+    cursor: pointer;
+    transition: all 50ms ease-in-out;
+}
+
+#reset-button:hover,
+#reset-button:focus {
+    background: var(--color-text);
+    color: #000;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 184, 255, 0.3);
+}

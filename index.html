@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lens AI Detector</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <main id="workbench">
+            <section id="upload-page" class="page active">
+                <div id="upload-box">
+                    <h1 class="lens-title">LENS</h1>
+
+                    <input
+                        type="file"
+                        id="image-upload"
+                        accept="image/jpeg, image/png, image/webp"
+                        hidden
+                    />
+
+                    <label for="image-upload" class="upload-label">
+                        <div class="upload-icon">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                            >
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7z" />
+                            </svg>
+                        </div>
+                        <h3>Drag & Drop Image or Click to Select File</h3>
+                        <p>
+                            AI Analysis will begin immediately. Supported types:
+                            .jpg, .png, .webp
+                        </p>
+                    </label>
+                </div>
+            </section>
+
+            <section id="scanning-page" class="page">
+                <div class="panel-viewer">
+                    <img id="scanning-image" src="" alt="Image being scanned" />
+                    <div id="scan-line"></div>
+                </div>
+
+                <div class="panel-log">
+                    <h3>ANALYSIS LOG</h3>
+                    <pre id="log-data-output" class="log-data"></pre>
+                </div>
+            </section>
+
+            <section id="results-page" class="page">
+                <div class="panel-viewer">
+                    <img id="results-image" src="" alt="Analyzed image" />
+                    <div id="heatmap-overlay"></div>
+                </div>
+
+                <div class="panel-report">
+                    <h3>OFFICIAL REPORT</h3>
+
+                    <div class="report-block">
+                        <span class="report-label">VERDICT</span>
+                        <span class="data-hot"
+                            >CONFIRMED: 100% AI GENERATED</span
+                        >
+                    </div>
+
+                    <div class="report-block">
+                        <span class="report-label">CONFIDENCE SCORE</span>
+                        <span class="data-blue"
+                            ><span id="confidence-score"></span>%</span
+                        >
+                    </div>
+
+                    <div class="report-block">
+                        <span class="report-label">DETECTED MODEL</span>
+                        <span class="data-blue">Midjourney v4.B</span>
+                    </div>
+
+                    <div class="report-block">
+                        <span class="report-label">KEY ARTIFACTS FOUND</span>
+                        <ul id="artifact-list" class="data-list"></ul>
+                    </div>
+
+                    <div class="report-block recommendation">
+                        <span class="report-label">RECOMMENDATION</span>
+                        <p>
+                            This image is AI. Do not trust. Share this report
+                            immediately.
+                        </p>
+                    </div>
+
+                    <button id="reset-button">SCAN ANOTHER IMAGE</button>
+                </div>
+            </section>
+        </main>
+
+        <script src="script.js"></script>
+    </body>
+</html>
